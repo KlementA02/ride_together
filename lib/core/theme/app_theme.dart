@@ -5,7 +5,7 @@ class AppTheme {
   // Define our strict palette
   static const Color _black = Color(0xFF000000);
   static const Color _white = Color(0xFFFFFFFF);
-  static const Color _lightGray = Color(0xFFF20F2F); // For subtle backgrounds
+  // static const Color _lightGray = Color(0xFFF20F2F); // For subtle backgrounds
   static const Color _mediumGray = Color(0xFF666666); // For secondary text
 
   static ThemeData get lightTheme {

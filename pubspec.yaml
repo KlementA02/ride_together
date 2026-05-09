@@ -18,6 +18,9 @@ dependencies:
   google_maps_flutter: ^2.15.0
   location: ^8.0.1
   riverpod_annotation: ^4.0.2
+  riverpod_generator: ^4.0.3
+  supabase: ^2.10.6
+  supabase_flutter: ^2.12.4
 
 dev_dependencies:
   flutter_test:
