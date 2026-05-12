@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -32,12 +33,15 @@ class AuthRepository {
         'is_driver': false, // Default to passenger
       });
     }
+
+    debugPrint('Sign-up successful for email: ${response.session?.toString()}');
   }
 
   /// Modern Swiss-style Login
   Future<AuthResponse> login(String email, String password) async {
+    debugPrint(_client.auth.currentSession.toString());
     return await _client.auth.signInWithPassword(
-      email: email, 
+      email: email,
       password: password,
     );
   }

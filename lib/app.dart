@@ -1,55 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:ride_together/features/auth/presentation/login_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ride_together/core/router/app_router.dart';
+import 'package:ride_together/core/theme/app_theme.dart';
 
-class CarpoolStartApp extends StatelessWidget {
+class CarpoolStartApp extends ConsumerWidget {
   const CarpoolStartApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(home: const StartPage());
-  }
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    // We watch our appRouter provider here
+    final router = ref.watch(appRouterProvider);
 
-class StartPage extends StatelessWidget {
-  const StartPage({super.key});
-
-  // Define all test routes here
-  static const List<({String name, WidgetBuilder builder})> testRoutes = [
-    (name: 'Login Screen', builder: _loginScreenBuilder),
-  ];
-
-  static Widget _loginScreenBuilder(BuildContext context) =>
-      const LoginScreen();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Ride Together - Test Hub'),
-        centerTitle: true,
-      ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: testRoutes.length,
-        itemBuilder: (context, index) {
-          final route = testRoutes[index];
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: route.builder),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(16),
-              ),
-              child: Text(route.name, style: const TextStyle(fontSize: 16)),
-            ),
-          );
-        },
-      ),
+    return MaterialApp.router(
+      title: 'InnoX Pool',
+      debugShowCheckedModeBanner: false,
+      
+      // Use the Swiss/Monochrome theme we built
+      theme: AppTheme.lightTheme,
+      
+      // Connect GoRouter to the MaterialApp
+      routerConfig: router,
     );
   }
 }
