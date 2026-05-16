@@ -1,23 +1,44 @@
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ride_together/core/shared/auth_providers.dart';
+
 import 'package:ride_together/features/auth/presentation/signup_screen.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../../features/auth/presentation/login_screen.dart';
-import '../../../features/home/presentation/home_screen.dart'; // We'll create this next
+import 'package:ride_together/features/auth/presentation/login_screen.dart';
+import 'package:ride_together/features/home/presentation/home_screen.dart';
 
-part 'app_router.g.dart';
+// Manual Provider definition - no build_runner or .g.dart file required!
+final appRouterProvider = Provider<GoRouter>((ref) {
+  // Watch your domain auth state slice so the router recreates/redirects when state shifts
+  final authState = ref.watch(authNotifierProvider);
 
-@riverpod
-GoRouter appRouter(Ref ref) {
   return GoRouter(
     initialLocation: '/',
-    // Redirect logic based on Auth State
     redirect: (context, state) {
-      final session = Supabase.instance.client.auth.currentSession;
-      final isLoggingIn = state.matchedLocation == '/login';
+      final matchedPath = state.matchedLocation;
+      
+      // Map your DDD state machine conditions directly
+      final bool isAuthenticated = authState.maybeWhen(
+        authenticated: (_) => true,
+        orElse: () => false,
+      );
 
-      if (session == null && !isLoggingIn) return '/login';
-      if (session != null && isLoggingIn) return '/';
+      final isGoingToLogin = matchedPath == '/login';
+      final isGoingToSignup = matchedPath == '/signup';
+
+      // Navigation Route Guards
+      if (!isAuthenticated) {
+        // If they are headed to login or signup, allow safe passage
+        if (isGoingToLogin || isGoingToSignup) return null;
+        // Otherwise, force them back to the login wall
+        return '/login';
+      }
+
+      // If they are authenticated but hit an auth entry gate, push them home
+      if (isAuthenticated && (isGoingToLogin || isGoingToSignup)) {
+        return '/';
+      }
+
+      // Allow normal progression
       return null;
     },
     routes: [
@@ -35,4 +56,4 @@ GoRouter appRouter(Ref ref) {
       ),
     ],
   );
-}
+});

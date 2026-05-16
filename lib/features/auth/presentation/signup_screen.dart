@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'signup_controller.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ride_together/core/shared/auth_providers.dart';
+
 
 class SignupScreen extends ConsumerStatefulWidget {
   const SignupScreen({super.key});
@@ -26,9 +27,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(signupControllerProvider);
-
-    debugPrint(state.error.toString());
+    final authState = ref.watch(authNotifierProvider);
+    final isLoading = authState.maybeWhen(loading: () => true, orElse: () => false);
 
     return Scaffold(
       appBar: AppBar(
@@ -45,18 +45,19 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
             children: [
               const SizedBox(height: 20),
               Text(
-                'JOIN\n RIDER\nTOGETHER.',
-                style: Theme.of(
-                  context,
-                ).textTheme.displayLarge?.copyWith(fontSize: 64, height: 0.9),
+                'JOIN\nRIDER\nTOGETHER.',
+                style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                      fontSize: 64,
+                      height: 0.9,
+                    ),
               ),
               const SizedBox(height: 12),
               Text(
                 'CREATE YOUR PROFILE',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  letterSpacing: 2.0,
-                  fontWeight: FontWeight.bold,
-                ),
+                      letterSpacing: 2.0,
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
               const SizedBox(height: 40),
 
@@ -65,6 +66,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 controller: _nameController,
                 decoration: const InputDecoration(labelText: 'FULL NAME'),
                 textCapitalization: TextCapitalization.words,
+                enabled: !isLoading,
               ),
               const SizedBox(height: 20),
 
@@ -73,6 +75,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 controller: _phoneController,
                 decoration: const InputDecoration(labelText: 'PHONE NUMBER'),
                 keyboardType: TextInputType.phone,
+                enabled: !isLoading,
               ),
               const SizedBox(height: 20),
 
@@ -81,6 +84,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 controller: _emailController,
                 decoration: const InputDecoration(labelText: 'EMAIL'),
                 keyboardType: TextInputType.emailAddress,
+                enabled: !isLoading,
               ),
               const SizedBox(height: 20),
 
@@ -89,22 +93,23 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 controller: _passwordController,
                 decoration: const InputDecoration(labelText: 'PASSWORD'),
                 obscureText: true,
+                enabled: !isLoading,
               ),
               const SizedBox(height: 40),
 
               // Sign Up Button
               ElevatedButton(
-                onPressed: state.isLoading
+                onPressed: isLoading
                     ? null
-                    : () => ref
-                          .read(signupControllerProvider.notifier)
-                          .signUp(
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                            fullName: _nameController.text,
-                            phone: _phoneController.text,
-                          ),
-                child: state.isLoading
+                    : () {
+                        ref.read(authNotifierProvider.notifier).signUpUser(
+                              email: _emailController.text.trim(),
+                              password: _passwordController.text.trim(),
+                              fullName: _nameController.text.trim(),
+                              phone: _phoneController.text.trim(),
+                            );
+                      },
+                child: isLoading
                     ? const SizedBox(
                         height: 20,
                         width: 20,
@@ -118,11 +123,17 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
               const SizedBox(height: 24),
 
-              if (state.hasError)
-                Padding(
+              // Error feedback matching your custom failure objects
+              authState.maybeWhen(
+                failure: (failure) => Padding(
                   padding: const EdgeInsets.only(bottom: 16),
                   child: Text(
-                    'ERROR: ${state.error.toString().toUpperCase()}',
+                    'ERROR: ${failure.when(
+                      server: (msg) => msg.toUpperCase(),
+                      invalidCredentials: () => "INVALID CREDENTIALS",
+                      emailAlreadyInUse: () => "EMAIL ALREADY IN USE",
+                      noConnection: () => "NO CONNECTION",
+                    )}',
                     style: const TextStyle(
                       color: Colors.red,
                       fontWeight: FontWeight.bold,
@@ -130,6 +141,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     ),
                   ),
                 ),
+                orElse: () => const SizedBox.shrink(),
+              ),
             ],
           ),
         ),

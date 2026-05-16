@@ -1,94 +1,100 @@
+// lib/core/theme/app_theme.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // Define our strict palette
-  static const Color _black = Color(0xFF000000);
-  static const Color _white = Color(0xFFFFFFFF);
-  // static const Color _lightGray = Color(0xFFF20F2F); // For subtle backgrounds
-  static const Color _mediumGray = Color(0xFF666666); // For secondary text
+  // Pure Swiss Minimalist Color Palette Constants
+  static const Color starkWhite = Color(0xFFFFFFFF);
+  static const Color inkBlack = Color(0xFF000000);
+  static const Color neutralGray = Color(0xFFF5F5F5);
+  static const Color borderGray = Color(0xFFE0E0E0);
+  static const Color textMuted = Color(0xFF757575);
 
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
-      brightness: Brightness.light,
-      scaffoldBackgroundColor: _white,
-      primaryColor: _black,
+      scaffoldBackgroundColor: starkWhite,
+      primaryColor: inkBlack,
       
-      // Typography: Using Inter (a modern Swiss-style grotesque font)
-      textTheme: GoogleFonts.interTextTheme().copyWith(
-        displayLarge: const TextStyle(
-          color: _black,
-          fontWeight: FontWeight.w900, // Bold "Swiss" headers
+      // Stark typography hierarchy using clean grotesque type scales
+      textTheme: TextTheme(
+        displayLarge: GoogleFonts.spaceGrotesk(
+          color: inkBlack,
+          fontWeight: FontWeight.w900,
           letterSpacing: -1.5,
         ),
-        bodyLarge: const TextStyle(color: _black, fontSize: 16),
-        bodyMedium: const TextStyle(color: _mediumGray, fontSize: 14),
-      ),
-
-      // AppBar: Flat and minimal
-      appBarTheme: const AppBarTheme(
-        backgroundColor: _white,
-        elevation: 0,
-        centerTitle: false,
-        iconTheme: IconThemeData(color: _black),
-        titleTextStyle: TextStyle(
-          color: _black,
-          fontSize: 20,
-          fontWeight: FontWeight.w800,
+        bodyMedium: GoogleFonts.inter(
+          color: inkBlack,
+          fontWeight: FontWeight.w500,
+        ),
+        bodySmall: GoogleFonts.inter(
+          color: textMuted,
+          fontWeight: FontWeight.w400,
         ),
       ),
 
-      // Buttons: High contrast, rectangular (Swiss design avoids soft rounds)
+      // Hard-edged card components with zero elevation and solid raw borders
+      cardTheme: CardThemeData(
+        color: starkWhite,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(0), // Sharp Swiss geometry
+          side: const BorderSide(color: inkBlack, width: 2.0),
+        ),
+      ),
+
+      // Stark, high-contrast inputs with clean structural framing
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: neutralGray,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        labelStyle: GoogleFonts.spaceGrotesk(
+          color: inkBlack,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 1.0,
+        ),
+        border: const OutlineInputBorder(
+          borderRadius: BorderRadius.zero,
+          borderSide: BorderSide(color: inkBlack, width: 2.0),
+        ),
+        enabledBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.zero,
+          borderSide: BorderSide(color: borderGray, width: 1.5),
+        ),
+        focusedBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.zero,
+          borderSide: BorderSide(color: inkBlack, width: 2.5),
+        ),
+      ),
+
+      // Flat, raw block-style action buttons
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: _black,
-          foregroundColor: _white,
-          minimumSize: const Size(double.infinity, 56),
+          backgroundColor: inkBlack,
+          foregroundColor: starkWhite,
+          elevation: 0, // No soft shadows
+          minimumSize: const Size.fromHeight(56), // Full horizontal block width
           shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.zero, // Sharp corners for Swiss look
+            borderRadius: BorderRadius.zero, // Flat geometry edge
           ),
-          textStyle: const TextStyle(
+          textStyle: GoogleFonts.spaceGrotesk(
             fontWeight: FontWeight.bold,
-            letterSpacing: 1.0,
+            fontSize: 14,
+            letterSpacing: 2.0,
           ),
         ),
       ),
 
-      // Input Decoration: Simple underlines or thin borders
-      inputDecorationTheme: const InputDecorationTheme(
-        filled: true,
-        fillColor: _white,
-        border: OutlineInputBorder(
-          borderSide: BorderSide(color: _black, width: 2),
-          borderRadius: BorderRadius.zero,
+      // High-contrast clean icon configurations
+      appBarTheme: const AppBarTheme(
+        backgroundColor: starkWhite,
+        elevation: 0,
+        iconTheme: IconThemeData(color: inkBlack, size: 24),
+        titleTextStyle: TextStyle(
+          color: inkBlack,
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
         ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: _black, width: 1),
-          borderRadius: BorderRadius.zero,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: _black, width: 2.5),
-          borderRadius: BorderRadius.zero,
-        ),
-        labelStyle: TextStyle(color: _black),
-      ),
-
-      // Card Design: Zero elevation, thin border
-      cardTheme: CardThemeData(
-        color: _white,
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          side: BorderSide(color: _black, width: 1),
-          borderRadius: BorderRadius.zero,
-        ),
-      ),
-
-      // Floating Action Button
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: _black,
-        foregroundColor: _white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
       ),
     );
   }

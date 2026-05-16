@@ -1,53 +1,78 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-part 'auth_repository.g.dart';
+import 'package:ride_together/features/auth/infrastructure/auth_remote_svc.dart';
+import '../domain/auth_failure.dart';
+import '../domain/auth_user.dart';
 
 class AuthRepository {
-  final SupabaseClient _client;
+  final AuthRemoteService _remoteService;
 
-  AuthRepository(this._client);
+  AuthRepository(this._remoteService);
 
-  /// Signs up a new user and creates their profile record
-  Future<void> signUp({
+  Future<Either<AuthFailure, AuthUser>> signUp({
     required String email,
     required String password,
     required String fullName,
     required String phone,
   }) async {
-    // 1. Create the Auth User
-    final response = await _client.auth.signUp(
-      email: email,
-      password: password,
-    );
+    try {
+      final response = await _remoteService.signUp(
+        email: email,
+        password: password,
+        fullName: fullName,
+        phone: phone,
+      );
 
-    final user = response.user;
-
-    if (user != null) {
-      // 2. Create the Profile entry in our custom table
-      await _client.from('profiles').insert({
-        'id': user.id,
-        'full_name': fullName,
-        'phone_number': phone,
-        'is_driver': false, // Default to passenger
-      });
+      return response.when(
+        noConnection: () => const Left(AuthFailure.noConnection()),
+        permissionDenied: () => const Left(AuthFailure.invalidCredentials()),
+        error: (message) {
+          if (message.contains('already registered')) {
+            return const Left(AuthFailure.emailAlreadyInUse());
+          }
+          return Left(AuthFailure.server(message: message));
+        },
+        withNewData: (dto) => Right(dto.toDomain()),
+      );
+    } catch (e) {
+      debugPrint('[AuthRepository] Failure during domain conversion: $e');
+      return Left(AuthFailure.server(message: e.toString()));
     }
-
-    debugPrint('Sign-up successful for email: ${response.session?.toString()}');
   }
 
-  /// Modern Swiss-style Login
-  Future<AuthResponse> login(String email, String password) async {
-    debugPrint(_client.auth.currentSession.toString());
-    return await _client.auth.signInWithPassword(
-      email: email,
-      password: password,
-    );
-  }
-}
+  Future<Either<AuthFailure, AuthUser>> signIn({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final response = await _remoteService.signIn(
+        email: email,
+        password: password,
+      );
 
-@riverpod
-AuthRepository authRepository(Ref ref) {
-  return AuthRepository(Supabase.instance.client);
+      return response.when(
+        noConnection: () => const Left(AuthFailure.noConnection()),
+        permissionDenied: () => const Left(AuthFailure.invalidCredentials()),
+        error: (message) {
+          if (message.contains('No user found')) {
+            return const Left(AuthFailure.emailAlreadyInUse());
+          }
+          return Left(AuthFailure.server(message: message));
+        },
+        withNewData: (dto) => Right(dto.toDomain()),
+      );
+    } catch (e) {
+      debugPrint('[AuthRepository] Failure during domain conversion: $e');
+      return Left(AuthFailure.server(message: e.toString()));
+    }
+  }
+
+  Future<void> signOut() async {
+    try {
+      await _remoteService.signOut();
+      debugPrint('[AuthRepository] User signed out successfully.');
+    } catch (e) {
+      debugPrint('[AuthRepository] Failure during sign out: $e');
+    }
+  }
 }
