@@ -7,7 +7,6 @@ import 'package:ride_together/core/shared/auth_providers.dart';
 import 'package:ride_together/features/auth/presentation/signup_screen.dart';
 import 'package:ride_together/features/auth/application/auth_state.dart';
 
-
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
@@ -29,7 +28,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authNotifierProvider);
-    final isLoading = authState.maybeWhen(loading: () => true, orElse: () => false);
+    final isLoading =
+        authState.maybeWhen(loading: () => true, orElse: () => false);
 
     // Structural listener watching state machine output triggers
     ref.listen<AuthState>(authNotifierProvider, (previous, next) {
@@ -37,7 +37,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
       next.maybeWhen(
         authenticated: (user) {
-          developer.log('Auth confirmed for UID: ${user.uid}. Routing to home.');
+          developer
+              .log('Auth confirmed for UID: ${user.uid}. Routing to home.');
           context.go('/');
         },
         orElse: () {},
@@ -85,14 +86,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 obscureText: true,
                 enabled: !isLoading,
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 24),
+
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                      onPressed: () {}, child: const Text('FORGOT PASSWORD?'))),
 
               // Login Button
               ElevatedButton(
                 onPressed: isLoading
                     ? null
                     : () {
-                        developer.log('Attempting login pipeline via DDD notifier.');
+                        developer
+                            .log('Attempting login pipeline via DDD notifier.');
                         authState.maybeWhen(
                           orElse: () {
                             ref.read(authNotifierProvider.notifier).signInUser(
@@ -126,7 +133,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       noConnection: () => "NO CONNECTION",
                     )}',
                     style: const TextStyle(
-                      color: Colors.black, // Monochrome design aesthetic accentuation
+                      color: Colors
+                          .black, // Monochrome design aesthetic accentuation
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline,
                     ),
@@ -136,21 +144,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ),
 
               const SizedBox(height: 20),
-              TextButton(
-                onPressed: isLoading
-                    ? null
-                    : () {
-                        // Safe context navigation back to signup panel page
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const SignupScreen()),
-                        );
-                      },
-                child: const Text(
-                  "DON'T HAVE AN ACCOUNT? SIGN UP",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
+              Align(
+                alignment: Alignment.center,
+                child: TextButton(
+                  onPressed: isLoading
+                      ? null
+                      : () {
+                          // Safe context navigation back to signup panel page
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (_) => const SignupScreen()),
+                          );
+                        },
+                  child: const Text(
+                    "DON'T HAVE AN ACCOUNT? SIGN UP",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
