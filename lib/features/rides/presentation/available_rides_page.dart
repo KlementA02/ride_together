@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ride_together/features/rides/domain/available_ride.dart';
+import 'package:ride_together/features/rides/presentation/widgets/available_rides_card.dart';
 
 class AvailableRidesPage extends ConsumerStatefulWidget {
   const AvailableRidesPage({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _AvailableRidesPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _AvailableRidesPageState();
 }
 
 class _AvailableRidesPageState extends ConsumerState<AvailableRidesPage> {
@@ -62,10 +64,65 @@ class _AvailableRidesPageState extends ConsumerState<AvailableRidesPage> {
   ];
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
+      body: SafeArea(
+        child: Container(
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(16.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.06),
+                blurRadius: 10,
+                offset: const Offset(0, -4),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Sheet Context Title Block Row
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 10.0, vertical: 24.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Available Rides',
+                      style: theme.textTheme.displayLarge?.copyWith(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      '${_rides.length} rides found',
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
 
+              // Scrollable Cards List Frame
+              Expanded(
+                child: ListView.separated(
+                  padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
+                  itemCount: _rides.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 12),
+                  itemBuilder: (context, index) {
+                    final ride = _rides[index];
+                    return AvailableRidesCard(ride: ride, theme: theme);
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -6,6 +6,8 @@ import 'package:ride_together/features/auth/presentation/signup_screen.dart';
 import 'package:ride_together/features/auth/presentation/login_screen.dart';
 import 'package:ride_together/features/home/presentation/bottom_navigation_page.dart';
 import 'package:ride_together/features/home/presentation/home_screen.dart';
+import 'package:ride_together/features/profile/presentation/profile_page.dart';
+import 'package:ride_together/features/rides/presentation/available_rides_page.dart';
 
 // Manual Provider definition - no build_runner or .g.dart file required!
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -58,6 +60,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/signup',
         builder: (context, state) => const SignupScreen(),
+      ),
+      GoRoute(
+        path: '/rides',
+        builder: (context, state) => const AvailableRidesPage(),
+      ),
+      GoRoute(
+        path: '/profile',
+        builder: (context, state) => const ProfileScreen(),
       ),
     ],
   );

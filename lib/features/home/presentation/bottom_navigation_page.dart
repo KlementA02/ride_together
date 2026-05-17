@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ride_together/features/home/presentation/home_screen.dart';
+import 'package:ride_together/features/profile/presentation/profile_page.dart';
+import 'package:ride_together/features/rides/presentation/available_rides_page.dart';
 
 class BottomNavigationPage extends ConsumerStatefulWidget {
   const BottomNavigationPage({super.key});
@@ -29,9 +31,9 @@ class _BottomNavigationPageState extends ConsumerState<BottomNavigationPage> {
         controller: _pageController,
         children: [
           const HomeScreen(), 
-          Container(color: Colors.green), 
+          const AvailableRidesPage(),
           Container(color: Colors.blue), 
-          Container(color: Colors.orange), 
+          const ProfileScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

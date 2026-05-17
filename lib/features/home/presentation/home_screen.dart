@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ride_together/features/home/presentation/widgets/search_bar_app.dart';
 import 'package:ride_together/features/rides/domain/available_ride.dart';
