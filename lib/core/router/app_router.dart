@@ -4,6 +4,7 @@ import 'package:ride_together/core/shared/auth_providers.dart';
 
 import 'package:ride_together/features/auth/presentation/signup_screen.dart';
 import 'package:ride_together/features/auth/presentation/login_screen.dart';
+import 'package:ride_together/features/home/presentation/bottom_navigation_page.dart';
 import 'package:ride_together/features/home/presentation/home_screen.dart';
 
 // Manual Provider definition - no build_runner or .g.dart file required!
@@ -42,8 +43,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       return null;
     },
     routes: [
-      GoRoute(
+       GoRoute(
         path: '/',
+        builder: (context, state) => const BottomNavigationPage(),
+      ),
+      GoRoute(
+        path: '/home',
         builder: (context, state) => const HomeScreen(),
       ),
       GoRoute(
