@@ -60,6 +60,8 @@ Future<RemoteResponse<AuthUserDTO>> signIn({
         password: password,
       );
 
+      debugPrint('[AuthRemoteService] Sign-in successful for email: ${authResponse.toString()}');
+
       final user = authResponse.user;
       if (user == null) {
         return const RemoteResponse.error('User sign-in returned an empty record.');

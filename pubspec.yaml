@@ -20,6 +20,7 @@ dependencies:
   json_annotation: ^4.9.0
   location: ^8.0.1
   riverpod_annotation: ^2.6.1
+  sliver_tools: ^0.2.12
   supabase: ^2.10.6
   supabase_flutter: ^2.12.4
 
