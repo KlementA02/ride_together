@@ -1,94 +1,143 @@
+// lib/core/theme/app_theme.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // Define our strict palette
-  static const Color _black = Color(0xFF000000);
-  static const Color _white = Color(0xFFFFFFFF);
-  // static const Color _lightGray = Color(0xFFF20F2F); // For subtle backgrounds
-  static const Color _mediumGray = Color(0xFF666666); // For secondary text
+  // --- Figma AI Token Palette Mapping ---
+  static const Color background = Color(0xFFFFFFFF);
+  static const Color foreground = Color(0xFF1A1D1E); // Premium Dark Slate
+  static const Color card = Color(0xFFFFFFFF);
+  
+  static const Color primary = Color(0xFF2D5BFF); // Brand Cobalt Blue
+  static const Color secondary = Color(0xFFF8F9FB); // Soft Cool Gray Surface
+  static const Color mutedForeground = Color(0xFF6B7280); // Neutral Slate Gray
+  static const Color destructive = Color(0xFFEF4444); // Error Red
+  static const Color border = Color(0xFFE8E8E8); // Input & Card Structural Line
+
+  // Border Radius Token: 0.75rem = 12px
+  static const double radiusValue = 12.0;
+  static final BorderRadius defaultRadius = BorderRadius.circular(radiusValue);
 
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
-      brightness: Brightness.light,
-      scaffoldBackgroundColor: _white,
-      primaryColor: _black,
-      
-      // Typography: Using Inter (a modern Swiss-style grotesque font)
-      textTheme: GoogleFonts.interTextTheme().copyWith(
-        displayLarge: const TextStyle(
-          color: _black,
-          fontWeight: FontWeight.w900, // Bold "Swiss" headers
-          letterSpacing: -1.5,
-        ),
-        bodyLarge: const TextStyle(color: _black, fontSize: 16),
-        bodyMedium: const TextStyle(color: _mediumGray, fontSize: 14),
+      scaffoldBackgroundColor: background,
+      primaryColor: primary,
+      colorScheme: const ColorScheme.light(
+        primary: primary,
+        secondary: secondary,
+        surface: card,
+        error: destructive,
+        onPrimary: Colors.white,
+        onSurface: foreground,
       ),
 
-      // AppBar: Flat and minimal
-      appBarTheme: const AppBarTheme(
-        backgroundColor: _white,
-        elevation: 0,
-        centerTitle: false,
-        iconTheme: IconThemeData(color: _black),
-        titleTextStyle: TextStyle(
-          color: _black,
-          fontSize: 20,
-          fontWeight: FontWeight.w800,
+      // --- Typography Matching Figma Base Layer ---
+      textTheme: TextTheme(
+        displayLarge: GoogleFonts.spaceGrotesk(
+          color: foreground,
+          fontWeight: FontWeight.w500, // --font-weight-medium
+          letterSpacing: -1.0,
         ),
-      ),
-
-      // Buttons: High contrast, rectangular (Swiss design avoids soft rounds)
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: _black,
-          foregroundColor: _white,
-          minimumSize: const Size(double.infinity, 56),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.zero, // Sharp corners for Swiss look
-          ),
-          textStyle: const TextStyle(
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1.0,
-          ),
+        bodyLarge: GoogleFonts.inter(
+          color: foreground,
+          fontWeight: FontWeight.w400, // --font-weight-normal
+          fontSize: 16,
+        ),
+        bodyMedium: GoogleFonts.inter(
+          color: foreground,
+          fontWeight: FontWeight.w400,
+        ),
+        bodySmall: GoogleFonts.inter(
+          color: mutedForeground,
+          fontWeight: FontWeight.w400,
+          fontSize: 14,
         ),
       ),
 
-      // Input Decoration: Simple underlines or thin borders
-      inputDecorationTheme: const InputDecorationTheme(
+      // --- Cards with Uniform Figma Radius ---
+      cardTheme: CardThemeData(
+        color: card,
+        elevation: 0, 
+        shape: RoundedRectangleBorder(
+          borderRadius: defaultRadius,
+          side: const BorderSide(color: border, width: 1.0),
+        ),
+      ),
+
+      // --- Soft, Muted Inputs via Token Spec ---
+      inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: _white,
+        fillColor: secondary, // --input-background
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        labelStyle: GoogleFonts.spaceGrotesk(
+          color: mutedForeground,
+          fontWeight: FontWeight.w500,
+        ),
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: _black, width: 2),
-          borderRadius: BorderRadius.zero,
+          borderRadius: defaultRadius,
+          borderSide: const BorderSide(color: border, width: 1.0),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: _black, width: 1),
-          borderRadius: BorderRadius.zero,
+          borderRadius: defaultRadius,
+          borderSide: const BorderSide(color: border, width: 1.0),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: _black, width: 2.5),
-          borderRadius: BorderRadius.zero,
+          borderRadius: defaultRadius,
+          borderSide: const BorderSide(color: primary, width: 1.5), // Accent Ring
         ),
-        labelStyle: TextStyle(color: _black),
+        errorBorder: OutlineInputBorder(
+          borderRadius: defaultRadius,
+          borderSide: const BorderSide(color: destructive, width: 1.0),
+        ),
       ),
 
-      // Card Design: Zero elevation, thin border
-      cardTheme: CardThemeData(
-        color: _white,
-        elevation: 2,
+      // --- Fluid Tech Action Buttons ---
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: primary,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          minimumSize: const Size.fromHeight(56),
+          shape: RoundedRectangleBorder(
+            borderRadius: defaultRadius,
+          ),
+          textStyle: GoogleFonts.spaceGrotesk(
+            fontWeight: FontWeight.w500, // --font-weight-medium
+            fontSize: 16,
+          ),
+        ),
+      ),
+
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: primary,
+          textStyle: GoogleFonts.spaceGrotesk(
+            fontWeight: FontWeight.w500,
+            fontSize: 14,
+          ),
+        ),
+      ),
+
+      // --- Context sheets conforming to frame rules ---
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: background,
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: _black, width: 1),
-          borderRadius: BorderRadius.zero,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(radiusValue)),
+          side: BorderSide(color: border, width: 1.0),
         ),
+        showDragHandle: true,
       ),
 
-      // Floating Action Button
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: _black,
-        foregroundColor: _white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: background,
+        elevation: 0,
+        iconTheme: IconThemeData(color: foreground, size: 24),
+        titleTextStyle: TextStyle(
+          color: foreground,
+          fontWeight: FontWeight.w500,
+          fontSize: 18,
+        ),
       ),
     );
   }
