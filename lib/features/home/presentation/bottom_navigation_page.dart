@@ -29,17 +29,15 @@ class _BottomNavigationPageState extends ConsumerState<BottomNavigationPage> {
     return Scaffold(
       body: PageView(
         controller: _pageController,
-        children: [
-          const HomeScreen(), 
-          const AvailableRidesPage(),
-          Container(color: Colors.blue), 
-          const ProfileScreen(),
+        children: const [
+          HomeScreen(),
+          AvailableRidesPage(),
+          ProfileScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: theme.colorScheme.primary,
         unselectedItemColor: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-        
         onTap: _onItemTapped,
         items: const [
           BottomNavigationBarItem(
@@ -51,21 +49,17 @@ class _BottomNavigationPageState extends ConsumerState<BottomNavigationPage> {
             label: 'Rides',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.one_k_plus_outlined),
-            label: 'Other',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',
           ),
         ],
       ),
-      
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {}, 
-        label: const Text('OFFER A RIDE'),
-        icon: const Icon(Icons.add),
-      ),
+
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: () {},
+      //   label: const Text('OFFER A RIDE'),
+      //   icon: const Icon(Icons.add),
+      // ),
     );
   }
 }
