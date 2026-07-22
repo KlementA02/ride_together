@@ -25,6 +25,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> signUpUser({
     required String email,
+    required String username,
     required String password,
     required String fullName,
     required String phone,

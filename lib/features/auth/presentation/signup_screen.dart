@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ride_together/core/shared/auth_providers.dart';
 
-
 class SignupScreen extends ConsumerStatefulWidget {
   const SignupScreen({super.key});
 
@@ -12,6 +11,7 @@ class SignupScreen extends ConsumerStatefulWidget {
 
 class _SignupScreenState extends ConsumerState<SignupScreen> {
   final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -28,7 +28,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authNotifierProvider);
-    final isLoading = authState.maybeWhen(loading: () => true, orElse: () => false);
+    final isLoading =
+        authState.maybeWhen(loading: () => true, orElse: () => false);
 
     return Scaffold(
       appBar: AppBar(
@@ -88,6 +89,14 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
               ),
               const SizedBox(height: 20),
 
+              // Username Field
+              TextField(
+                controller: _usernameController,
+                decoration: const InputDecoration(labelText: 'USERNAME'),
+                enabled: !isLoading,
+              ),
+              const SizedBox(height: 20),
+
               // Password Field
               TextField(
                 controller: _passwordController,
@@ -107,6 +116,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                               password: _passwordController.text.trim(),
                               fullName: _nameController.text.trim(),
                               phone: _phoneController.text.trim(),
+                              username: _usernameController.text.trim(),
                             );
                       },
                 child: isLoading

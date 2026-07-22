@@ -14,6 +14,7 @@ class AuthUserDTO with _$AuthUserDTO {
   const factory AuthUserDTO({
     @JsonKey(fromJson: stringValueChecker) required String uid,
     @JsonKey(fromJson: stringValueChecker) required String email,
+    @JsonKey(fromJson: stringValueChecker) required String username,
     @JsonKey(name: 'full_name', fromJson: stringValueChecker) required String fullName,
     @JsonKey(name: 'phone_number', fromJson: stringValueChecker) required String phoneNumber,
     @JsonKey(name: 'is_driver', fromJson: boolValueChecker) required bool isDriver,
@@ -25,6 +26,7 @@ class AuthUserDTO with _$AuthUserDTO {
   AuthUser toDomain() => AuthUser(
         uid: uid,
         email: email,
+        username: username,
         fullName: fullName,
         phoneNumber: phoneNumber,
         isDriver: isDriver,

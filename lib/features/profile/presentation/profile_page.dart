@@ -18,7 +18,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         orElse: () => null, authenticated: (user) => user);
 
     final Map<String, dynamic> user = {
-      "name": profileDetails?.fullName ?? 'Alex Morgan',
+      "name": profileDetails?.username ?? 'Alex Morgan',
       "email": profileDetails?.email ?? 'alex.morgan@email.com',
       "image":
           "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop",

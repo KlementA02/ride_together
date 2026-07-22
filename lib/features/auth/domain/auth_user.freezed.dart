@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$AuthUser {
   String get uid => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
+  String get username => throw _privateConstructorUsedError;
   String get fullName => throw _privateConstructorUsedError;
   String get phoneNumber => throw _privateConstructorUsedError;
   bool get isDriver => throw _privateConstructorUsedError;
@@ -37,6 +38,7 @@ abstract class $AuthUserCopyWith<$Res> {
   $Res call(
       {String uid,
       String email,
+      String username,
       String fullName,
       String phoneNumber,
       bool isDriver});
@@ -59,6 +61,7 @@ class _$AuthUserCopyWithImpl<$Res, $Val extends AuthUser>
   $Res call({
     Object? uid = null,
     Object? email = null,
+    Object? username = null,
     Object? fullName = null,
     Object? phoneNumber = null,
     Object? isDriver = null,
@@ -71,6 +74,10 @@ class _$AuthUserCopyWithImpl<$Res, $Val extends AuthUser>
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
               as String,
       fullName: null == fullName
           ? _value.fullName
@@ -99,6 +106,7 @@ abstract class _$$AuthUserImplCopyWith<$Res>
   $Res call(
       {String uid,
       String email,
+      String username,
       String fullName,
       String phoneNumber,
       bool isDriver});
@@ -119,6 +127,7 @@ class __$$AuthUserImplCopyWithImpl<$Res>
   $Res call({
     Object? uid = null,
     Object? email = null,
+    Object? username = null,
     Object? fullName = null,
     Object? phoneNumber = null,
     Object? isDriver = null,
@@ -131,6 +140,10 @@ class __$$AuthUserImplCopyWithImpl<$Res>
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
               as String,
       fullName: null == fullName
           ? _value.fullName
@@ -154,6 +167,7 @@ class _$AuthUserImpl implements _AuthUser {
   const _$AuthUserImpl(
       {required this.uid,
       required this.email,
+      required this.username,
       required this.fullName,
       required this.phoneNumber,
       required this.isDriver});
@@ -163,6 +177,8 @@ class _$AuthUserImpl implements _AuthUser {
   @override
   final String email;
   @override
+  final String username;
+  @override
   final String fullName;
   @override
   final String phoneNumber;
@@ -171,7 +187,7 @@ class _$AuthUserImpl implements _AuthUser {
 
   @override
   String toString() {
-    return 'AuthUser(uid: $uid, email: $email, fullName: $fullName, phoneNumber: $phoneNumber, isDriver: $isDriver)';
+    return 'AuthUser(uid: $uid, email: $email, username: $username, fullName: $fullName, phoneNumber: $phoneNumber, isDriver: $isDriver)';
   }
 
   @override
@@ -181,6 +197,8 @@ class _$AuthUserImpl implements _AuthUser {
             other is _$AuthUserImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.email, email) || other.email == email) &&
+            (identical(other.username, username) ||
+                other.username == username) &&
             (identical(other.fullName, fullName) ||
                 other.fullName == fullName) &&
             (identical(other.phoneNumber, phoneNumber) ||
@@ -190,8 +208,8 @@ class _$AuthUserImpl implements _AuthUser {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, uid, email, fullName, phoneNumber, isDriver);
+  int get hashCode => Object.hash(
+      runtimeType, uid, email, username, fullName, phoneNumber, isDriver);
 
   /// Create a copy of AuthUser
   /// with the given fields replaced by the non-null parameter values.
@@ -206,6 +224,7 @@ abstract class _AuthUser implements AuthUser {
   const factory _AuthUser(
       {required final String uid,
       required final String email,
+      required final String username,
       required final String fullName,
       required final String phoneNumber,
       required final bool isDriver}) = _$AuthUserImpl;
@@ -214,6 +233,8 @@ abstract class _AuthUser implements AuthUser {
   String get uid;
   @override
   String get email;
+  @override
+  String get username;
   @override
   String get fullName;
   @override

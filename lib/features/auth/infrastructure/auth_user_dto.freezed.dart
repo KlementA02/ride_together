@@ -24,6 +24,8 @@ mixin _$AuthUserDTO {
   String get uid => throw _privateConstructorUsedError;
   @JsonKey(fromJson: stringValueChecker)
   String get email => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: stringValueChecker)
+  String get username => throw _privateConstructorUsedError;
   @JsonKey(name: 'full_name', fromJson: stringValueChecker)
   String get fullName => throw _privateConstructorUsedError;
   @JsonKey(name: 'phone_number', fromJson: stringValueChecker)
@@ -50,6 +52,7 @@ abstract class $AuthUserDTOCopyWith<$Res> {
   $Res call(
       {@JsonKey(fromJson: stringValueChecker) String uid,
       @JsonKey(fromJson: stringValueChecker) String email,
+      @JsonKey(fromJson: stringValueChecker) String username,
       @JsonKey(name: 'full_name', fromJson: stringValueChecker) String fullName,
       @JsonKey(name: 'phone_number', fromJson: stringValueChecker)
       String phoneNumber,
@@ -73,6 +76,7 @@ class _$AuthUserDTOCopyWithImpl<$Res, $Val extends AuthUserDTO>
   $Res call({
     Object? uid = null,
     Object? email = null,
+    Object? username = null,
     Object? fullName = null,
     Object? phoneNumber = null,
     Object? isDriver = null,
@@ -85,6 +89,10 @@ class _$AuthUserDTOCopyWithImpl<$Res, $Val extends AuthUserDTO>
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
               as String,
       fullName: null == fullName
           ? _value.fullName
@@ -113,6 +121,7 @@ abstract class _$$AuthUserDTOImplCopyWith<$Res>
   $Res call(
       {@JsonKey(fromJson: stringValueChecker) String uid,
       @JsonKey(fromJson: stringValueChecker) String email,
+      @JsonKey(fromJson: stringValueChecker) String username,
       @JsonKey(name: 'full_name', fromJson: stringValueChecker) String fullName,
       @JsonKey(name: 'phone_number', fromJson: stringValueChecker)
       String phoneNumber,
@@ -134,6 +143,7 @@ class __$$AuthUserDTOImplCopyWithImpl<$Res>
   $Res call({
     Object? uid = null,
     Object? email = null,
+    Object? username = null,
     Object? fullName = null,
     Object? phoneNumber = null,
     Object? isDriver = null,
@@ -146,6 +156,10 @@ class __$$AuthUserDTOImplCopyWithImpl<$Res>
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
               as String,
       fullName: null == fullName
           ? _value.fullName
@@ -169,6 +183,7 @@ class _$AuthUserDTOImpl extends _AuthUserDTO {
   const _$AuthUserDTOImpl(
       {@JsonKey(fromJson: stringValueChecker) required this.uid,
       @JsonKey(fromJson: stringValueChecker) required this.email,
+      @JsonKey(fromJson: stringValueChecker) required this.username,
       @JsonKey(name: 'full_name', fromJson: stringValueChecker)
       required this.fullName,
       @JsonKey(name: 'phone_number', fromJson: stringValueChecker)
@@ -187,6 +202,9 @@ class _$AuthUserDTOImpl extends _AuthUserDTO {
   @JsonKey(fromJson: stringValueChecker)
   final String email;
   @override
+  @JsonKey(fromJson: stringValueChecker)
+  final String username;
+  @override
   @JsonKey(name: 'full_name', fromJson: stringValueChecker)
   final String fullName;
   @override
@@ -198,7 +216,7 @@ class _$AuthUserDTOImpl extends _AuthUserDTO {
 
   @override
   String toString() {
-    return 'AuthUserDTO(uid: $uid, email: $email, fullName: $fullName, phoneNumber: $phoneNumber, isDriver: $isDriver)';
+    return 'AuthUserDTO(uid: $uid, email: $email, username: $username, fullName: $fullName, phoneNumber: $phoneNumber, isDriver: $isDriver)';
   }
 
   @override
@@ -208,6 +226,8 @@ class _$AuthUserDTOImpl extends _AuthUserDTO {
             other is _$AuthUserDTOImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.email, email) || other.email == email) &&
+            (identical(other.username, username) ||
+                other.username == username) &&
             (identical(other.fullName, fullName) ||
                 other.fullName == fullName) &&
             (identical(other.phoneNumber, phoneNumber) ||
@@ -218,8 +238,8 @@ class _$AuthUserDTOImpl extends _AuthUserDTO {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, uid, email, fullName, phoneNumber, isDriver);
+  int get hashCode => Object.hash(
+      runtimeType, uid, email, username, fullName, phoneNumber, isDriver);
 
   /// Create a copy of AuthUserDTO
   /// with the given fields replaced by the non-null parameter values.
@@ -241,6 +261,7 @@ abstract class _AuthUserDTO extends AuthUserDTO {
   const factory _AuthUserDTO(
       {@JsonKey(fromJson: stringValueChecker) required final String uid,
       @JsonKey(fromJson: stringValueChecker) required final String email,
+      @JsonKey(fromJson: stringValueChecker) required final String username,
       @JsonKey(name: 'full_name', fromJson: stringValueChecker)
       required final String fullName,
       @JsonKey(name: 'phone_number', fromJson: stringValueChecker)
@@ -258,6 +279,9 @@ abstract class _AuthUserDTO extends AuthUserDTO {
   @override
   @JsonKey(fromJson: stringValueChecker)
   String get email;
+  @override
+  @JsonKey(fromJson: stringValueChecker)
+  String get username;
   @override
   @JsonKey(name: 'full_name', fromJson: stringValueChecker)
   String get fullName;

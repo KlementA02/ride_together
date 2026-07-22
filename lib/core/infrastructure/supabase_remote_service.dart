@@ -1,39 +1,36 @@
 // lib/core/infrastructure/supabase_remote_service.dart
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ride_together/core/constants/django_api.dart';
 import 'package:ride_together/core/domain/remote_response.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-//part 'supabase_remote_service.g.dart';
+class DjangoRemoteService {
+  final Dio _dio;
 
-class SupabaseRemoteService {
-  final SupabaseClient _client;
+  DjangoRemoteService({Dio? dio})
+      : _dio = dio ??
+            Dio(BaseOptions(connectTimeout: const Duration(seconds: 10), receiveTimeout: const Duration(seconds: 10)));
 
-  SupabaseRemoteService(this._client);
-
-  // ==========================================
-  // AUTH BOUNDARY METHODS
-  // ==========================================
-
-  Future<RemoteResponse<User>> signIn({
+  Future<RemoteResponse<Map<String, dynamic>>> signIn({
     required String email,
     required String password,
   }) async {
     try {
-      final response = await _client.auth.signInWithPassword(
-        email: email,
-        password: password,
+      final response = await _dio.post(
+        DjangoApiConfig.resolveUrl(DjangoApiConfig.loginPath),
+        data: {'email': email, 'password': password},
       );
-      
-      final user = response.user;
-      if (user == null) {
-        return const RemoteResponse.error('Authentication returned an empty user profile.');
-      }
-      return RemoteResponse.withNewData(data: user);
-    } on AuthException catch (e) {
-      debugPrint('[SupabaseRemoteService] Auth Error: ${e.message}');
-      return RemoteResponse.error(e.message);
+
+      final payload = response.data is String
+          ? jsonDecode(response.data as String)
+          : response.data as Map<String, dynamic>;
+
+      return RemoteResponse.withNewData(data: payload);
+    } on DioException catch (e) {
+      debugPrint('[DjangoRemoteService] Auth Error: ${e.response?.data ?? e.message}');
+      return RemoteResponse.error(_extractMessage(e) ?? 'Authentication failed.');
     } catch (e) {
       return RemoteResponse.error(e.toString());
     }
@@ -41,78 +38,62 @@ class SupabaseRemoteService {
 
   Future<void> signOut() async {
     try {
-      await _client.auth.signOut();
+      await _dio.post(DjangoApiConfig.resolveUrl(DjangoApiConfig.logoutPath));
     } catch (e) {
-      debugPrint('[SupabaseRemoteService] Error during sign out: $e');
+      debugPrint('[DjangoRemoteService] Error during sign out: $e');
     }
   }
 
-  User? get currentUser => _client.auth.currentUser;
-
-  // ==========================================
-  // RIDE BOUNDARY METHODS
-  // ==========================================
-
-  /// Finds rides near specific coordinates, wrapping the raw JSON maps safely
   Future<RemoteResponse<List<Map<String, dynamic>>>> getNearbyRides({
     required double lat,
     required double lng,
     int radius = 5000,
   }) async {
     try {
-      final List<dynamic> response = await _client.rpc(
-        'get_rides_near_point',
-        params: {
-          'lat': lat, 
-          'lng': lng, 
+      final response = await _dio.get(
+        DjangoApiConfig.resolveUrl('/api/rides/nearby/'),
+        queryParameters: {
+          'lat': lat,
+          'lng': lng,
           'radius_meters': radius,
         },
       );
-      
-      final formattedList = List<Map<String, dynamic>>.from(response);
+
+      final payload = response.data is String
+          ? jsonDecode(response.data as String)
+          : response.data;
+
+      final formattedList = List<Map<String, dynamic>>.from(payload as List<dynamic>);
       return RemoteResponse.withNewData(data: formattedList);
-    } on PostgrestException catch (e) {
-      debugPrint('[SupabaseRemoteService] Postgrest RPC Error: ${e.message}');
-      return RemoteResponse.error(e.message);
+    } on DioException catch (e) {
+      debugPrint('[DjangoRemoteService] Request Error: ${e.response?.data ?? e.message}');
+      return RemoteResponse.error(_extractMessage(e) ?? 'Unable to fetch rides.');
     } catch (e) {
       return RemoteResponse.error(e.toString());
     }
   }
 
-  /// Post a new ride map configuration to the backend database table
   Future<RemoteResponse<bool>> createRide(Map<String, dynamic> rideData) async {
     try {
-      await _client.from('rides').insert(rideData);
-      return const RemoteResponse.withNewData(data: true); 
-    } on PostgrestException catch (e) {
-      debugPrint('[SupabaseRemoteService] Db Insert Failure: ${e.message}');
-      return RemoteResponse.error(e.message);
+      await _dio.post(DjangoApiConfig.resolveUrl('/api/rides/'), data: rideData);
+      return const RemoteResponse.withNewData(data: true);
+    } on DioException catch (e) {
+      debugPrint('[DjangoRemoteService] Db Insert Failure: ${e.response?.data ?? e.message}');
+      return RemoteResponse.error(_extractMessage(e) ?? 'Ride creation failed.');
     } catch (e) {
       return RemoteResponse.error(e.toString());
     }
   }
 
-  // ==========================================
-  // REAL-TIME STREAM HOOKS
-  // ==========================================
-
-  /// Stream tracking a specific ride's data mutations directly
-  Stream<List<Map<String, dynamic>>> watchRideStatus(String rideId) {
-    return _client
-        .from('rides')
-        .stream(primaryKey: ['id'])
-        .eq('id', rideId);
+  String? _extractMessage(DioException e) {
+    final data = e.response?.data;
+    if (data is Map<String, dynamic>) {
+      if (data.containsKey('detail')) return data['detail']?.toString();
+      if (data.containsKey('message')) return data['message']?.toString();
+      if (data.containsKey('error')) return data['error']?.toString();
+      if (data.containsKey('errors')) return data['errors'].toString();
+    }
+    if (data is String && data.isNotEmpty) return data;
+    return e.message;
   }
-}
-
-// Global Supabase Client Provider
-final supabaseClientProvider = Provider<SupabaseClient>((ref) {
-  return Supabase.instance.client;
-});
-
-// Modern Riverpod Code Generation Provider
-@riverpod
-SupabaseRemoteService supabaseRemoteService(Ref ref) {
-  final client = ref.watch(supabaseClientProvider);
-  return SupabaseRemoteService(client);
 }

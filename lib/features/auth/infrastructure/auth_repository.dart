@@ -27,12 +27,23 @@ class AuthRepository {
         noConnection: () => const Left(AuthFailure.noConnection()),
         permissionDenied: () => const Left(AuthFailure.invalidCredentials()),
         error: (message) {
-          if (message.contains('already registered')) {
+          final lowerMessage = message.toLowerCase();
+          if (lowerMessage.contains('already registered') ||
+              lowerMessage.contains('already exists') ||
+              lowerMessage.contains('username') &&
+                  lowerMessage.contains('taken')) {
             return const Left(AuthFailure.emailAlreadyInUse());
           }
           return Left(AuthFailure.server(message: message));
         },
-        withNewData: (dto) => Right(dto.toDomain()),
+        withNewData: (record) {
+          // Destructure record: record.token & record.user (AuthUserDTO)
+          final userDto = record.user;
+
+          // Optionally save record.token using Flutter Secure Storage here
+
+          return Right(userDto.toDomain());
+        },
       );
     } catch (e) {
       debugPrint('[AuthRepository] Failure during domain conversion: $e');
@@ -54,12 +65,22 @@ class AuthRepository {
         noConnection: () => const Left(AuthFailure.noConnection()),
         permissionDenied: () => const Left(AuthFailure.invalidCredentials()),
         error: (message) {
-          if (message.contains('No user found')) {
-            return const Left(AuthFailure.emailAlreadyInUse());
+          final lowerMessage = message.toLowerCase();
+          if (lowerMessage.contains('invalid credentials') ||
+              lowerMessage.contains('no active account') ||
+              lowerMessage.contains('unable to log in')) {
+            return const Left(AuthFailure.invalidCredentials());
           }
           return Left(AuthFailure.server(message: message));
         },
-        withNewData: (dto) => Right(dto.toDomain()),
+        withNewData: (record) {
+          // Destructure record: record.token & record.user (AuthUserDTO)
+          final userDto = record.user;
+
+          // Optionally save record.token using Flutter Secure Storage here
+
+          return Right(userDto.toDomain());
+        },
       );
     } catch (e) {
       debugPrint('[AuthRepository] Failure during domain conversion: $e');
@@ -70,6 +91,7 @@ class AuthRepository {
   Future<void> signOut() async {
     try {
       await _remoteService.signOut();
+      // Optionally clear stored token from Flutter Secure Storage here
       debugPrint('[AuthRepository] User signed out successfully.');
     } catch (e) {
       debugPrint('[AuthRepository] Failure during sign out: $e');

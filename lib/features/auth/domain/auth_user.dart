@@ -8,6 +8,7 @@ class AuthUser with _$AuthUser {
   const factory AuthUser({
     required String uid,
     required String email,
+    required String username,
     required String fullName,
     required String phoneNumber,
     required bool isDriver,
