@@ -115,7 +115,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                               email: _emailController.text.trim(),
                               password: _passwordController.text.trim(),
                               fullName: _nameController.text.trim(),
-                              phone: _phoneController.text.trim(),
+                              phoneNumber: _phoneController.text.trim(),
                               username: _usernameController.text.trim(),
                             );
                       },

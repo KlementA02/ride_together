@@ -11,9 +11,9 @@ _$AuthUserDTOImpl _$$AuthUserDTOImplFromJson(Map<String, dynamic> json) =>
       uid: stringValueChecker(json['uid']),
       email: stringValueChecker(json['email']),
       username: stringValueChecker(json['username']),
-      fullName: stringValueChecker(json['full_name']),
-      phoneNumber: stringValueChecker(json['phone_number']),
-      isDriver: boolValueChecker(json['is_driver']),
+      fullName: stringValueChecker(json['fullName']),
+      phoneNumber: stringValueChecker(json['phoneNumber']),
+      isDriver: boolValueChecker(json['isDriver']),
     );
 
 Map<String, dynamic> _$$AuthUserDTOImplToJson(_$AuthUserDTOImpl instance) =>
@@ -21,7 +21,7 @@ Map<String, dynamic> _$$AuthUserDTOImplToJson(_$AuthUserDTOImpl instance) =>
       'uid': instance.uid,
       'email': instance.email,
       'username': instance.username,
-      'full_name': instance.fullName,
-      'phone_number': instance.phoneNumber,
-      'is_driver': instance.isDriver,
+      'fullName': instance.fullName,
+      'phoneNumber': instance.phoneNumber,
+      'isDriver': instance.isDriver,
     };

@@ -26,11 +26,11 @@ mixin _$AuthUserDTO {
   String get email => throw _privateConstructorUsedError;
   @JsonKey(fromJson: stringValueChecker)
   String get username => throw _privateConstructorUsedError;
-  @JsonKey(name: 'full_name', fromJson: stringValueChecker)
+  @JsonKey(name: 'fullName', fromJson: stringValueChecker)
   String get fullName => throw _privateConstructorUsedError;
-  @JsonKey(name: 'phone_number', fromJson: stringValueChecker)
+  @JsonKey(name: 'phoneNumber', fromJson: stringValueChecker)
   String get phoneNumber => throw _privateConstructorUsedError;
-  @JsonKey(name: 'is_driver', fromJson: boolValueChecker)
+  @JsonKey(name: 'isDriver', fromJson: boolValueChecker)
   bool get isDriver => throw _privateConstructorUsedError;
 
   /// Serializes this AuthUserDTO to a JSON map.
@@ -53,10 +53,10 @@ abstract class $AuthUserDTOCopyWith<$Res> {
       {@JsonKey(fromJson: stringValueChecker) String uid,
       @JsonKey(fromJson: stringValueChecker) String email,
       @JsonKey(fromJson: stringValueChecker) String username,
-      @JsonKey(name: 'full_name', fromJson: stringValueChecker) String fullName,
-      @JsonKey(name: 'phone_number', fromJson: stringValueChecker)
+      @JsonKey(name: 'fullName', fromJson: stringValueChecker) String fullName,
+      @JsonKey(name: 'phoneNumber', fromJson: stringValueChecker)
       String phoneNumber,
-      @JsonKey(name: 'is_driver', fromJson: boolValueChecker) bool isDriver});
+      @JsonKey(name: 'isDriver', fromJson: boolValueChecker) bool isDriver});
 }
 
 /// @nodoc
@@ -122,10 +122,10 @@ abstract class _$$AuthUserDTOImplCopyWith<$Res>
       {@JsonKey(fromJson: stringValueChecker) String uid,
       @JsonKey(fromJson: stringValueChecker) String email,
       @JsonKey(fromJson: stringValueChecker) String username,
-      @JsonKey(name: 'full_name', fromJson: stringValueChecker) String fullName,
-      @JsonKey(name: 'phone_number', fromJson: stringValueChecker)
+      @JsonKey(name: 'fullName', fromJson: stringValueChecker) String fullName,
+      @JsonKey(name: 'phoneNumber', fromJson: stringValueChecker)
       String phoneNumber,
-      @JsonKey(name: 'is_driver', fromJson: boolValueChecker) bool isDriver});
+      @JsonKey(name: 'isDriver', fromJson: boolValueChecker) bool isDriver});
 }
 
 /// @nodoc
@@ -184,11 +184,11 @@ class _$AuthUserDTOImpl extends _AuthUserDTO {
       {@JsonKey(fromJson: stringValueChecker) required this.uid,
       @JsonKey(fromJson: stringValueChecker) required this.email,
       @JsonKey(fromJson: stringValueChecker) required this.username,
-      @JsonKey(name: 'full_name', fromJson: stringValueChecker)
+      @JsonKey(name: 'fullName', fromJson: stringValueChecker)
       required this.fullName,
-      @JsonKey(name: 'phone_number', fromJson: stringValueChecker)
+      @JsonKey(name: 'phoneNumber', fromJson: stringValueChecker)
       required this.phoneNumber,
-      @JsonKey(name: 'is_driver', fromJson: boolValueChecker)
+      @JsonKey(name: 'isDriver', fromJson: boolValueChecker)
       required this.isDriver})
       : super._();
 
@@ -205,13 +205,13 @@ class _$AuthUserDTOImpl extends _AuthUserDTO {
   @JsonKey(fromJson: stringValueChecker)
   final String username;
   @override
-  @JsonKey(name: 'full_name', fromJson: stringValueChecker)
+  @JsonKey(name: 'fullName', fromJson: stringValueChecker)
   final String fullName;
   @override
-  @JsonKey(name: 'phone_number', fromJson: stringValueChecker)
+  @JsonKey(name: 'phoneNumber', fromJson: stringValueChecker)
   final String phoneNumber;
   @override
-  @JsonKey(name: 'is_driver', fromJson: boolValueChecker)
+  @JsonKey(name: 'isDriver', fromJson: boolValueChecker)
   final bool isDriver;
 
   @override
@@ -262,11 +262,11 @@ abstract class _AuthUserDTO extends AuthUserDTO {
       {@JsonKey(fromJson: stringValueChecker) required final String uid,
       @JsonKey(fromJson: stringValueChecker) required final String email,
       @JsonKey(fromJson: stringValueChecker) required final String username,
-      @JsonKey(name: 'full_name', fromJson: stringValueChecker)
+      @JsonKey(name: 'fullName', fromJson: stringValueChecker)
       required final String fullName,
-      @JsonKey(name: 'phone_number', fromJson: stringValueChecker)
+      @JsonKey(name: 'phoneNumber', fromJson: stringValueChecker)
       required final String phoneNumber,
-      @JsonKey(name: 'is_driver', fromJson: boolValueChecker)
+      @JsonKey(name: 'isDriver', fromJson: boolValueChecker)
       required final bool isDriver}) = _$AuthUserDTOImpl;
   const _AuthUserDTO._() : super._();
 
@@ -283,13 +283,13 @@ abstract class _AuthUserDTO extends AuthUserDTO {
   @JsonKey(fromJson: stringValueChecker)
   String get username;
   @override
-  @JsonKey(name: 'full_name', fromJson: stringValueChecker)
+  @JsonKey(name: 'fullName', fromJson: stringValueChecker)
   String get fullName;
   @override
-  @JsonKey(name: 'phone_number', fromJson: stringValueChecker)
+  @JsonKey(name: 'phoneNumber', fromJson: stringValueChecker)
   String get phoneNumber;
   @override
-  @JsonKey(name: 'is_driver', fromJson: boolValueChecker)
+  @JsonKey(name: 'isDriver', fromJson: boolValueChecker)
   bool get isDriver;
 
   /// Create a copy of AuthUserDTO

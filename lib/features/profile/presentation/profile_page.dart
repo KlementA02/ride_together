@@ -18,8 +18,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         orElse: () => null, authenticated: (user) => user);
 
     final Map<String, dynamic> user = {
-      "name": profileDetails?.username ?? 'Alex Morgan',
-      "email": profileDetails?.email ?? 'alex.morgan@email.com',
+      "name": profileDetails?.fullName ?? 'Alex Morgan',
+      "email": profileDetails?.email ?? 'alexmorgan@email.com',
       "image":
           "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop",
       "rating": 4.8,
@@ -292,7 +292,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                   children: [
                                     Expanded(
                                       child: ElevatedButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          debugPrint(
+                                              '${profileDetails?.fullName}');
+                                        },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.white
                                               .withValues(alpha: 0.2),

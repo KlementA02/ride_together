@@ -11,16 +11,18 @@ class AuthRepository {
 
   Future<Either<AuthFailure, AuthUser>> signUp({
     required String email,
+    required String username,
     required String password,
     required String fullName,
-    required String phone,
+    required String phoneNumber,
   }) async {
     try {
       final response = await _remoteService.signUp(
         email: email,
+        username: username,
         password: password,
         fullName: fullName,
-        phone: phone,
+        phoneNumber: phoneNumber,
       );
 
       return response.when(

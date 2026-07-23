@@ -15,9 +15,9 @@ class AuthUserDTO with _$AuthUserDTO {
     @JsonKey(fromJson: stringValueChecker) required String uid,
     @JsonKey(fromJson: stringValueChecker) required String email,
     @JsonKey(fromJson: stringValueChecker) required String username,
-    @JsonKey(name: 'full_name', fromJson: stringValueChecker) required String fullName,
-    @JsonKey(name: 'phone_number', fromJson: stringValueChecker) required String phoneNumber,
-    @JsonKey(name: 'is_driver', fromJson: boolValueChecker) required bool isDriver,
+    @JsonKey(name: 'fullName', fromJson: stringValueChecker) required String fullName,
+    @JsonKey(name: 'phoneNumber', fromJson: stringValueChecker) required String phoneNumber,
+    @JsonKey(name: 'isDriver', fromJson: boolValueChecker) required bool isDriver,
   }) = _AuthUserDTO;
 
   factory AuthUserDTO.fromJson(Map<String, dynamic> json) =>

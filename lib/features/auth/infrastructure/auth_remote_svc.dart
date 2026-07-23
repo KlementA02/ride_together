@@ -30,18 +30,18 @@ class AuthRemoteService {
     required String email,
     required String password,
     required String fullName,
-    required String phone,
-    String? username,
+    required String phoneNumber,
+    required String username,
   }) async {
     try {
       final response = await _dio.post(
         DjangoApiConfig.resolveUrl(DjangoApiConfig.signupPath),
         data: {
-          'username': email, // Django requires username by default
+          'username': username,
           'email': email,
           'password': password,
-          'full_name': fullName,
-          'phone_number': phone,
+          'fullName': fullName,
+          'phoneNumber': phoneNumber,
         },
       );
 
@@ -52,6 +52,7 @@ class AuthRemoteService {
 
         final token = payload['token'] as String? ?? '';
         final userData = (payload['user'] ?? payload) as Map<String, dynamic>;
+        debugPrint('[AuthRemoteService] signup user data: $userData');
 
         if (token.isNotEmpty) {
           _setAuthToken(token);
@@ -100,6 +101,7 @@ class AuthRemoteService {
 
         final token = payload['token'] as String? ?? '';
         final userData = (payload['user'] ?? payload) as Map<String, dynamic>;
+        debugPrint('Response received: ${response.data}');
 
         if (token.isNotEmpty) {
           _setAuthToken(token);
